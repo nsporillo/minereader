@@ -1,0 +1,9 @@
+name: MineReader
+author: milkywayz 
+main: net.milkycraft.MineReader
+website: http://milkycraft.net
+version: 1.0
+
+commands:
+  book:
+    aliases: [mr, bk]
