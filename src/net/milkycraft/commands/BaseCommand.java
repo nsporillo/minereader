@@ -1,4 +1,4 @@
-package net.milkycraft.skullwall.commands;
+package net.milkycraft.commands;
 
 import static org.bukkit.ChatColor.AQUA;
 import static org.bukkit.ChatColor.BLUE;

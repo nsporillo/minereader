@@ -1,4 +1,4 @@
-package net.milkycraft.skullwall.commands;
+package net.milkycraft.commands;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;

@@ -1,6 +1,6 @@
 package net.milkycraft;
 
-import net.milkycraft.skullwall.commands.CommandHandler;
+import net.milkycraft.commands.CommandHandler;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

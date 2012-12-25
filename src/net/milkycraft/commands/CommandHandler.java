@@ -1,4 +1,4 @@
-package net.milkycraft.skullwall.commands;
+package net.milkycraft.commands;
 
 import java.util.ArrayList;
 import java.util.Arrays;
