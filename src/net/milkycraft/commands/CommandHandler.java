@@ -30,7 +30,7 @@ public class CommandHandler {
 		if (args.length == 0
 				|| this.commands.get(args[0].toLowerCase()) == null) {
 			sender.sendMessage(ChatColor.GREEN + "===" + ChatColor.GOLD
-					+ " SkullWalls Help " + ChatColor.GREEN + "===");
+					+ " Minereader Help " + ChatColor.GREEN + "===");
 			for (final Command cmd : this.commands.values()) {
 				if (cmd.checkPermission(sender)) {
 					cmd.showHelp(sender, label);
