@@ -1,0 +1,10 @@
+General:
+  Cache-books: true
+  Use-Blacklist: false
+Blacklist:
+  IDs:
+  - 0
+  Authors:
+  - 'Badman'
+  Titles: 
+  - '50 shades of grey'
