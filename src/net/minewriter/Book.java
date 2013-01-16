@@ -10,7 +10,7 @@ import org.bukkit.inventory.meta.BookMeta;
 import org.json.JSONObject;
 
 public class Book extends ItemStack {
-	
+
 	private String title;
 	private String url;
 	private String author;
@@ -19,7 +19,7 @@ public class Book extends ItemStack {
 	private List<String> lore = new ArrayList<String>();
 	private BookMeta meta;
 	private JSONObject json;
-	
+
 	public Book(String urlpath) throws Exception {
 		super(Material.WRITTEN_BOOK);
 		url = urlpath;
@@ -27,7 +27,7 @@ public class Book extends ItemStack {
 		title = json.getString("Title");
 		author = json.getString("Author");
 		id = json.getInt("ID");
-		meta = (BookMeta) getItemMeta();	
+		meta = (BookMeta) getItemMeta();
 		for (String s : delimit(json.getString("Content"), 256)) {
 			pages.add(ChatColor.translateAlternateColorCodes('$', s));
 		}
@@ -51,16 +51,20 @@ public class Book extends ItemStack {
 		}
 		return arr;
 	}
-	
+
 	public String getTitle() {
 		return title;
 	}
-	
+
 	public String getAuthor() {
 		return author;
 	}
-	
+
 	public int getID() {
 		return id;
+	}
+
+	public boolean isBanned(MineReader plugin) {
+		return plugin.getConf().isBanned(this);
 	}
 }
