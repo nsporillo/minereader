@@ -4,7 +4,7 @@ import java.util.List;
 
 public class YamlConfig extends YamlLoader{
 
-	public boolean cache, black;
+	public boolean cache, black, debug;
 	public List<String> authors, titles;
 	public List<Integer> ids;
 	public YamlConfig(MineReader plugin, String fileName) {
@@ -17,6 +17,7 @@ public class YamlConfig extends YamlLoader{
 	protected void loadKeys() {
 		cache = config.getBoolean("General.Cache-books");
 		black = config.getBoolean("General.Use-Blacklist");
+		debug = config.getBoolean("General.Debug");
 		if(black) {
 			ids = config.getIntegerList("Blacklist.IDs");
 			authors = config.getStringList("Blacklist.Authors");
@@ -24,19 +25,19 @@ public class YamlConfig extends YamlLoader{
 		}
 	}
 	
-	public boolean isAllowed(Book b) {
+	public boolean isBanned(Book b) {
 		if(!black) {
-			return true;
+			return false;
 		}
 		if(authors.contains(b.getAuthor())) {
-			return false;
+			return true;
 		}
 		if(titles.contains(b.getTitle())) {
-			return false;
+			return true;
 		}
 		if(ids.contains(b.getID())) {
-			return false;
+			return true;
 		}
-		return true;
+		return false;
 	}
 }

@@ -1,5 +1,6 @@
 General:
   Cache-books: true
+  Debug: false
   Use-Blacklist: false
 Blacklist:
   IDs:
