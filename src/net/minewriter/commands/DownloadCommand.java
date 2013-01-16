@@ -46,11 +46,21 @@ public class DownloadCommand extends BaseCommand {
 	public void download(final Player p, final String id) {
 		Book b = get(Integer.parseInt(id));
 		if (b != null) {
+			if (b.isBanned(plugin)) {
+				p.sendMessage(RED + "Sorry that book was 'banned'");
+				p.sendMessage(RED + "It was blacklisted in the config");
+				return;
+			}
 			p.sendMessage(GREEN + "Fetched book from cache, there you go!");
 			p.getInventory().addItem(b);
 			return;
 		}
-		p.sendMessage(GREEN + "Book not cached, downloading now...");
+		if (plugin.getConf().cache) {
+			p.sendMessage(GREEN + "Book not yet cached, downloading now...");
+		} else {
+			p.sendMessage(GREEN + "Downloading book from minewriter");
+		}
+
 		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 
 			@Override
@@ -60,9 +70,12 @@ public class DownloadCommand extends BaseCommand {
 				try {
 					url = new URL("http://minewriter.net/query.php?id="
 							+ URLEncoder.encode(id, "UTF-8") + "&type=JSON");
+					plugin.debug(url.toExternalForm());
 					book = new Book(url.toString());
 				} catch (Exception e) {
 					p.sendMessage(RED + "Error: Book was not found");
+					plugin.getLogger().warning(
+							"Book " + id + " could not be found!");
 					plugin.getLogger().warning(e.getLocalizedMessage());
 					return;
 				}
@@ -72,15 +85,26 @@ public class DownloadCommand extends BaseCommand {
 	}
 
 	public void download(final Player p, List<String> args) {
-		final String author = args.get(0);
-		final String title = args.get(1);
+		final String author = args.get(0).replace("~", " ");
+		final String title = args.get(1).replace("~", " ");
+		final String a = author.replace(" ", "%20");
+		final String t = title.replace(" ", "%20");
 		Book b = get(author, title);
 		if (b != null) {
+			if (b.isBanned(plugin)) {
+				p.sendMessage(RED + "Sorry that book was 'banned'");
+				p.sendMessage(RED + "It was blacklisted in the config");
+				return;
+			}
 			p.sendMessage(GREEN + "Fetched book from cache, there you go!");
 			p.getInventory().addItem(b);
 			return;
 		}
-		p.sendMessage(GREEN + "Book not cached, downloading now...");
+		if (plugin.getConf().cache) {
+			p.sendMessage(GREEN + "Book not yet cached, downloading now...");
+		} else {
+			p.sendMessage(GREEN + "Downloading book from minewriter");
+		}
 		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 
 			@Override
@@ -88,12 +112,15 @@ public class DownloadCommand extends BaseCommand {
 				Book book = null;
 				URL url;
 				try {
-					url = new URL("http://minewriter.net/query.php?author="
-							+ URLEncoder.encode(author, "UTF-8") + "&title="
-							+ URLEncoder.encode(title, "UTF-8") + "&type=JSON");
+					url = new URL("http://minewriter.net/query.php?author=" + a
+							+ "&title=" + t + "&type=JSON");
+					plugin.debug(url.toExternalForm());
 					book = new Book(url.toString());
 				} catch (Exception e) {
 					p.sendMessage(RED + "Error: Book was not found");
+					plugin.getLogger().warning(
+							"Book could not be found! - Author: " + author
+									+ " Title: " + title);
 					plugin.getLogger().warning(e.getLocalizedMessage());
 					return;
 				}
@@ -111,24 +138,29 @@ public class DownloadCommand extends BaseCommand {
 	}
 
 	public void add(Book b) {
-		if(!plugin.getConf().cache) {
+		if (!plugin.getConf().cache) {
 			return;
 		}
 		if (getLibrary().add(b)) {
-			plugin.info("Successfully cached book '" + b.getTitle() + "' by "
-					+ b.getAuthor());
+			if (b.isBanned(plugin)) {
+				plugin.info("Cached banned book " + b.getTitle() + " by "
+						+ b.getAuthor());
+			} else {
+				plugin.info("Cached book '" + b.getTitle() + "' by "
+						+ b.getAuthor());
+			}
 		}
 	}
 
 	public void give(Player p, Book b) {
-		synchronized (this) {
-			add(b);
-			if(plugin.getConf().isAllowed(b)) {
+		synchronized (p) {
+			if (!b.isBanned(plugin)) {
 				p.getInventory().addItem(b);
 			} else {
 				p.sendMessage(RED + "Sorry that book was 'banned'");
 				p.sendMessage(RED + "It was blacklisted in the config");
 			}
+			add(b);
 		}
 	}
 }
