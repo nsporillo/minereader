@@ -12,7 +12,7 @@ public class MineReader extends JavaPlugin {
 	private CommandHandler commands;
 	private static Library lib = new Library();
 	private YamlConfig conf;
-	
+
 	@Override
 	public void onEnable() {
 		commands = new CommandHandler(this);
@@ -28,6 +28,12 @@ public class MineReader extends JavaPlugin {
 		this.getLogger().info(info);
 	}
 
+	public void debug(String debug) {
+		if (conf.debug) {
+			this.getLogger().info("[Debug] " + debug);
+		}
+	}
+
 	@Override
 	public boolean onCommand(final CommandSender sender, final Command cmd,
 			final String label, final String[] args) {
@@ -38,11 +44,11 @@ public class MineReader extends JavaPlugin {
 		}
 		return true;
 	}
-	
+
 	public static Library getLibrary() {
 		return lib;
 	}
-	
+
 	public YamlConfig getConf() {
 		return conf;
 	}
