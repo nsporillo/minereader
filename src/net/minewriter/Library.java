@@ -25,7 +25,7 @@ public class Library {
 	
 	public Book get(String author, String title) {
 		for(Book b : library) {
-			if(b.getAuthor().equals(author) && b.getTitle().equals(title)) {
+			if(b.getAuthor().equalsIgnoreCase(author) && b.getTitle().equalsIgnoreCase(title)) {
 				return b;
 			}
 		}
