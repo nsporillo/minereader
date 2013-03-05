@@ -22,7 +22,7 @@ public class DownloadCommand extends BaseCommand {
 		super.setName("download");
 		super.addUsage("[author]", "[title]",
 				"Downloads book from author + title");
-		super.addUsage("[author]", "[title]", "Downloads book from id");
+		super.addUsage("[id]", null, "Downloads book from id");
 		super.setPermission("minereader.download");
 	}
 
@@ -35,6 +35,7 @@ public class DownloadCommand extends BaseCommand {
 		if (sender instanceof Player) {
 			final Player p = ((Player) sender);
 			if (args.size() == 0) {
+				sender.sendMessage(RED + "You must provide a book id atleast");
 			} else if (args.size() == 1) {
 				download(p, args.get(0));
 			} else if (args.size() == 2) {
@@ -153,14 +154,12 @@ public class DownloadCommand extends BaseCommand {
 	}
 
 	public void give(Player p, Book b) {
-		synchronized (p) {
-			if (!b.isBanned(plugin)) {
-				p.getInventory().addItem(b);
-			} else {
-				p.sendMessage(RED + "Sorry that book was 'banned'");
-				p.sendMessage(RED + "It was blacklisted in the config");
-			}
-			add(b);
+		if (!b.isBanned(plugin)) {
+			p.getInventory().addItem(b);
+		} else {
+			p.sendMessage(RED + "Sorry that book was 'banned'");
+			p.sendMessage(RED + "It was blacklisted in the config");
 		}
+		add(b);
 	}
 }
