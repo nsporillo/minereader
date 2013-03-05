@@ -38,7 +38,7 @@ public class Book extends ItemStack {
 		setItemMeta(meta);
 	}
 
-	public String[] delimit(String str, int chunk) {
+	private static String[] delimit(String str, int chunk) {
 		int size = (int) Math.ceil((double) str.length() / chunk);
 		String[] arr = new String[size];
 		int dex = 0;
